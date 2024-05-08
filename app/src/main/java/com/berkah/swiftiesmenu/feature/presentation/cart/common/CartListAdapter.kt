@@ -11,8 +11,8 @@ import com.berkah.swiftiesmenu.databinding.ItemCartMenuBinding
 import com.berkah.swiftiesmenu.databinding.ItemCartMenuOrderBinding
 import com.berkah.swiftiesmenu.feature.data.base.ViewHolderBinder
 import com.berkah.swiftiesmenu.feature.data.model.Cart
-import feature.utils.doneEditing
-import feature.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.data.utils.doneEditing
+import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
 
 class CartListAdapter(private val cartListener: CartListener? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

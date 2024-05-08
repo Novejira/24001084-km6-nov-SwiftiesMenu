@@ -15,16 +15,22 @@ import com.berkah.swiftiesmenu.feature.data.datasource.cart.CartDatabaseDataSour
 import com.berkah.swiftiesmenu.feature.data.model.Cart
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepositoryImpl
+import com.berkah.swiftiesmenu.feature.data.repository.UserRepositoryImpl
 import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
+import com.berkah.swiftiesmenu.feature.data.source.network.firebase.FirebaseAuthDataSourceImpl
 import com.berkah.swiftiesmenu.feature.presentation.checkout.CheckoutActivity
 import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListener
-import feature.utils.GenericViewModelFactory
-import feature.utils.hideKeyboard
-import feature.utils.proceedWhen
-import feature.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
+import com.berkah.swiftiesmenu.feature.data.utils.hideKeyboard
+import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
+import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.presentation.login.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class CartFragment : Fragment() {
+
+    private var isLogin = false
 
     private lateinit var binding: FragmentCartBinding
 
@@ -32,7 +38,11 @@ class CartFragment : Fragment() {
         val db = AppDatabase.getInstance(requireContext())
         val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
         val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp))
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
+        val repo = UserRepositoryImpl(dataSource)
+        GenericViewModelFactory.create(CartViewModel(rp,repo))
+
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -75,8 +85,19 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnOrder.setOnClickListener {
-            startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+            if (viewModel.isUserLoggedIn()) {
+                isLogin = true
+                navigateToCheckout()
+            } else {
+                navigateToLogin()
+            }
         }
+    }
+    private fun navigateToCheckout() {
+        startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+    }
+    private fun navigateToLogin() {
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
     }
 
     private fun observeData() {

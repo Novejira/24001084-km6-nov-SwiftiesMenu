@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.berkah.swiftiesmenu.databinding.ItemPriceBinding
 import com.berkah.swiftiesmenu.feature.data.model.PriceItem
-import feature.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
 
 class PriceListAdapter(private val itemClick: (PriceItem) -> Unit) :
     RecyclerView.Adapter<PriceListAdapter.PriceItemViewHolder>() {

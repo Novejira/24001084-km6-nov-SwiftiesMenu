@@ -6,12 +6,18 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.berkah.swiftiesmenu.feature.data.model.Cart
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
+import com.berkah.swiftiesmenu.feature.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CartViewModel(private val cartRepository: CartRepository) : ViewModel() {
+class CartViewModel(
+    private val cartRepository: CartRepository,
+    private val repository: UserRepository
+) : ViewModel() {
+
     fun getAllCarts() = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
+
     fun decreaseCart(item: Cart) {
         viewModelScope.launch(Dispatchers.IO) {
             cartRepository.decreaseCart(item).collect()
@@ -34,4 +40,5 @@ class CartViewModel(private val cartRepository: CartRepository) : ViewModel() {
             }
         }
     }
+    fun isUserLoggedIn() = repository.isLoggedIn()
 }

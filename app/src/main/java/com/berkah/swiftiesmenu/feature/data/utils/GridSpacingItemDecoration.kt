@@ -1,4 +1,4 @@
-package feature.utils
+package com.berkah.swiftiesmenu.feature.data.utils
 
 import android.graphics.Rect
 import android.view.View

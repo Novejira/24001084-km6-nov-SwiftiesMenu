@@ -20,9 +20,9 @@ import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
 import com.berkah.swiftiesmenu.feature.data.source.network.services.SwiftiesMenuApiService
 import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.checkout.adapter.PriceListAdapter
-import feature.utils.GenericViewModelFactory
-import feature.utils.proceedWhen
-import feature.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
+import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
+import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
 
 class CheckoutActivity : AppCompatActivity() {
 

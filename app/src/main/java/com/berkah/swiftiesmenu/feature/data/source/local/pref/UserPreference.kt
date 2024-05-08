@@ -1,9 +1,8 @@
 package com.berkah.swiftiesmenu.feature.data.source.local.pref
 
 import android.content.Context
-import android.content.SharedPreferences
-import feature.utils.SharedPreferenceUtils
-import feature.utils.SharedPreferenceUtils.set
+import com.berkah.swiftiesmenu.feature.data.utils.SharedPreferenceUtils
+import com.berkah.swiftiesmenu.feature.data.utils.SharedPreferenceUtils.set
 
 interface UserPreference {
     fun isUsingGridMode(): Boolean

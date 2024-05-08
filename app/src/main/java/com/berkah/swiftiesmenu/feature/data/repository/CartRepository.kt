@@ -7,9 +7,9 @@ import com.berkah.swiftiesmenu.feature.data.model.Cart
 import com.berkah.swiftiesmenu.feature.data.model.Menu
 import com.berkah.swiftiesmenu.feature.data.model.PriceItem
 import com.berkah.swiftiesmenu.feature.data.source.entity.CartEntity
-import feature.utils.ResultWrapper
-import feature.utils.proceed
-import feature.utils.proceedFlow
+import com.berkah.swiftiesmenu.feature.data.utils.ResultWrapper
+import com.berkah.swiftiesmenu.feature.data.utils.proceed
+import com.berkah.swiftiesmenu.feature.data.utils.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

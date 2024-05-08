@@ -24,10 +24,11 @@ import com.berkah.swiftiesmenu.feature.data.source.network.services.SwiftiesMenu
 import com.berkah.swiftiesmenu.feature.presentation.detailfood.DetailFoodActivity
 import com.berkah.swiftiesmenu.feature.presentation.home.adapter.CategoryListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.home.adapter.MenuListAdapter
-import feature.utils.GenericViewModelFactory
-import feature.utils.proceedWhen
+import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
+import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 
 class Homefragment : Fragment() {
+
 
     private lateinit var binding: FragmentHomeBinding
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import com.berkah.swiftiesmenu.feature.data.model.Menu
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
-import feature.utils.ResultWrapper
+import com.berkah.swiftiesmenu.feature.data.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 
 class DetailFoodViewModel(

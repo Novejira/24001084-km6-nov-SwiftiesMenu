@@ -1,4 +1,4 @@
-package feature.utils
+package com.berkah.swiftiesmenu.feature.data.utils
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

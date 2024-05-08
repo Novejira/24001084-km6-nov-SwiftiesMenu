@@ -15,9 +15,9 @@ import com.berkah.swiftiesmenu.feature.data.model.Menu
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepositoryImpl
 import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
-import feature.utils.GenericViewModelFactory
-import feature.utils.proceedWhen
-import feature.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
+import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
+import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
 
 class DetailFoodActivity : AppCompatActivity() {
     private val binding: ActivityDetailFoodBinding by lazy {

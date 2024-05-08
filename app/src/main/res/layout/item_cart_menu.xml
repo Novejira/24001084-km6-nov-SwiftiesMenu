@@ -96,7 +96,6 @@
         style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/seed"
         android:layout_marginVertical="8dp"
         android:hint="@string/text_hint_notes"
         android:imeOptions="actionDone"
