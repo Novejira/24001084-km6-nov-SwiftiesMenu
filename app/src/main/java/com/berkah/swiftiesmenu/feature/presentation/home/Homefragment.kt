@@ -6,32 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.berkah.swiftiesmenu.R
 import com.berkah.swiftiesmenu.databinding.FragmentHomeBinding
-import com.berkah.swiftiesmenu.feature.data.datasource.category.CategoryApiDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.category.CategoryDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.menu.MenuApiDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.menu.MenuDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.user.UserDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.user.UserDataSourceImpl
 import com.berkah.swiftiesmenu.feature.data.model.Category
 import com.berkah.swiftiesmenu.feature.data.model.Menu
-import com.berkah.swiftiesmenu.feature.data.repository.CategoryRepository
-import com.berkah.swiftiesmenu.feature.data.repository.CategoryRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.repository.MenuRepository
-import com.berkah.swiftiesmenu.feature.data.repository.MenuRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.repository.PreferenceRepository
-import com.berkah.swiftiesmenu.feature.data.repository.PreferenceRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.source.local.pref.UserPreference
-import com.berkah.swiftiesmenu.feature.data.source.local.pref.UserPreferenceImpl
-import com.berkah.swiftiesmenu.feature.data.source.network.services.SwiftiesMenuApiService
-import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 import com.berkah.swiftiesmenu.feature.presentation.detailfood.DetailFoodActivity
 import com.berkah.swiftiesmenu.feature.presentation.home.adapter.CategoryListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.home.adapter.MenuListAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Homefragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -40,17 +24,8 @@ class Homefragment : Fragment() {
 
     private var gridLayoutManager: GridLayoutManager? = null
 
-    private val viewModel: HomeViewModel by viewModels {
-        val service = SwiftiesMenuApiService.invoke()
-        val userPreference: UserPreference = UserPreferenceImpl(requireContext())
-        val userDataSource: UserDataSource = UserDataSourceImpl(userPreference)
-        val preferenceRepository: PreferenceRepository = PreferenceRepositoryImpl(userDataSource)
-        val menuDataSource: MenuDataSource = MenuApiDataSource(service)
-        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        val categoryDataSource: CategoryDataSource = CategoryApiDataSource(service)
-        val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
-        GenericViewModelFactory.create(HomeViewModel(categoryRepository, menuRepository, preferenceRepository))
-    }
+    private val homeViewModel: HomeViewModel by viewModel()
+
     private val categoryAdapter: CategoryListAdapter by lazy {
         CategoryListAdapter {
             // when category clicked
@@ -59,7 +34,7 @@ class Homefragment : Fragment() {
     }
 
     private fun getMenuData(categoryName: String? = null) {
-        viewModel.getMenus(categoryName).observe(viewLifecycleOwner) {
+        homeViewModel.getMenus(categoryName).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data ->
@@ -93,14 +68,14 @@ class Homefragment : Fragment() {
     }
 
     private fun observeGridMode() {
-        viewModel.isUsingGrid.observe(viewLifecycleOwner) {
+        homeViewModel.isUsingGrid.observe(viewLifecycleOwner) {
             setButtonText(it)
             bindMenuList(it)
         }
     }
 
     private fun getCategoryData() {
-        viewModel.getCategories().observe(viewLifecycleOwner) {
+        homeViewModel.getCategories().observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindCategoryList(data) }
@@ -129,8 +104,8 @@ class Homefragment : Fragment() {
         menuAdapter.notifyDataSetChanged()
     }
 
-    private fun bindAdapterMenu()  {
-        val listType = if (viewModel.isUsingGrid.value == true) MenuListAdapter.MODE_GRID else MenuListAdapter.MODE_LIST
+    private fun bindAdapterMenu() {
+        val listType = if (homeViewModel.isUsingGrid.value == true) MenuListAdapter.MODE_GRID else MenuListAdapter.MODE_LIST
         menuAdapter =
             MenuListAdapter(
                 object : MenuListAdapter.OnItemClickedListener<Menu> {
@@ -143,7 +118,7 @@ class Homefragment : Fragment() {
     }
 
     private fun changeListMode() {
-        viewModel.changeGridMode()
+        homeViewModel.changeGridMode()
     }
 
     private fun bindMenu(data: List<Menu>) {
@@ -152,8 +127,8 @@ class Homefragment : Fragment() {
 
     private fun setClickAction() {
         binding.btnChangeListMode.setOnClickListener {
-            val newMode = !viewModel.isUsingGridMode()
-            viewModel.setUsingGridMode(newMode)
+            val newMode = !homeViewModel.isUsingGridMode()
+            homeViewModel.setUsingGridMode(newMode)
             changeListMode()
         }
     }

@@ -4,36 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.berkah.swiftiesmenu.R
 import com.berkah.swiftiesmenu.databinding.ActivityLoginBinding
-import com.berkah.swiftiesmenu.feature.data.repository.UserRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.source.network.firebase.FirebaseAuthDataSourceImpl
-import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.highLightWord
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 import com.berkah.swiftiesmenu.feature.presentation.main.MainActivity
 import com.berkah.swiftiesmenu.feature.presentation.register.RegisterActivity
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: LoginViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-
-    private fun createViewModel(): LoginViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return LoginViewModel(repo)
-    }
+    private val loginviewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun observeResult() {
-        viewModel.loginResult.observe(this) {
+        loginviewModel.loginResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false
@@ -104,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
         if (isFormValid()) {
             val email = binding.layoutForm.etEmail.text.toString().trim()
             val password = binding.layoutForm.etPassword.text.toString().trim()
-            viewModel.doLogin(email, password)
+            loginviewModel.doLogin(email, password)
         }
     }
 

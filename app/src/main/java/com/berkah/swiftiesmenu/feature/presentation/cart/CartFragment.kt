@@ -10,14 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.berkah.swiftiesmenu.R
 import com.berkah.swiftiesmenu.databinding.FragmentCartBinding
-import com.berkah.swiftiesmenu.feature.data.datasource.cart.CartDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.cart.CartDatabaseDataSource
 import com.berkah.swiftiesmenu.feature.data.model.Cart
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
-import com.berkah.swiftiesmenu.feature.data.repository.CartRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.repository.UserRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
-import com.berkah.swiftiesmenu.feature.data.source.network.firebase.FirebaseAuthDataSourceImpl
+import com.berkah.swiftiesmenu.feature.data.repository.UserRepository
 import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.hideKeyboard
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
@@ -26,20 +21,16 @@ import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListener
 import com.berkah.swiftiesmenu.feature.presentation.checkout.CheckoutActivity
 import com.berkah.swiftiesmenu.feature.presentation.login.LoginActivity
-import com.google.firebase.auth.FirebaseAuth
+import org.koin.android.ext.android.get
 
 class CartFragment : Fragment() {
     private var isLogin = false
 
     private lateinit var binding: FragmentCartBinding
 
-    private val viewModel: CartViewModel by viewModels {
-        val db = AppDatabase.getInstance(requireContext())
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
+    private val cartviewModel: CartViewModel by viewModels {
+        val rp: CartRepository = get()
+        val repo: UserRepository = get()
         GenericViewModelFactory.create(CartViewModel(rp, repo))
     }
 
@@ -47,19 +38,19 @@ class CartFragment : Fragment() {
         CartListAdapter(
             object : CartListener {
                 override fun onPlusTotalItemCartClicked(cart: Cart) {
-                    viewModel.increaseCart(cart)
+                    cartviewModel.increaseCart(cart)
                 }
 
                 override fun onMinusTotalItemCartClicked(cart: Cart) {
-                    viewModel.decreaseCart(cart)
+                    cartviewModel.decreaseCart(cart)
                 }
 
                 override fun onRemoveCartClicked(cart: Cart) {
-                    viewModel.removeCart(cart)
+                    cartviewModel.removeCart(cart)
                 }
 
                 override fun onUserDoneEditingNotes(cart: Cart) {
-                    viewModel.setCartNotes(cart)
+                    cartviewModel.setCartNotes(cart)
                     hideKeyboard()
                 }
             },
@@ -89,7 +80,7 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnOrder.setOnClickListener {
-            if (viewModel.isUserLoggedIn()) {
+            if (cartviewModel.isUserLoggedIn()) {
                 isLogin = true
                 navigateToCheckout()
             } else {
@@ -107,7 +98,7 @@ class CartFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
+        cartviewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true

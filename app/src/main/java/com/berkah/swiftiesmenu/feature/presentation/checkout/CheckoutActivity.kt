@@ -8,34 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.berkah.swiftiesmenu.R
 import com.berkah.swiftiesmenu.databinding.ActivityCheckoutBinding
-import com.berkah.swiftiesmenu.feature.data.datasource.cart.CartDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.cart.CartDatabaseDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.menu.MenuApiDataSource
-import com.berkah.swiftiesmenu.feature.data.datasource.menu.MenuDataSource
 import com.berkah.swiftiesmenu.feature.data.repository.CartRepository
-import com.berkah.swiftiesmenu.feature.data.repository.CartRepositoryImpl
 import com.berkah.swiftiesmenu.feature.data.repository.MenuRepository
-import com.berkah.swiftiesmenu.feature.data.repository.MenuRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
-import com.berkah.swiftiesmenu.feature.data.source.network.services.SwiftiesMenuApiService
 import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
 import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
 import com.berkah.swiftiesmenu.feature.presentation.checkout.adapter.PriceListAdapter
+import org.koin.android.ext.android.inject
 
 class CheckoutActivity : AppCompatActivity() {
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
-    private val viewModel: CheckoutViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val s = SwiftiesMenuApiService.invoke()
-        val pds: MenuDataSource = MenuApiDataSource(s)
-        val pr: MenuRepository = MenuRepositoryImpl(pds)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp, pr))
+    private val checkoutviewModel: CheckoutViewModel by viewModels {
+        val cartRepository: CartRepository by inject()
+        val menuRepository: MenuRepository by inject()
+        GenericViewModelFactory.create(CheckoutViewModel(cartRepository, menuRepository))
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -64,7 +53,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun doCheckout() {
-        viewModel.checkoutCart().observe(this) {
+        checkoutviewModel.checkoutCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
@@ -72,7 +61,7 @@ class CheckoutActivity : AppCompatActivity() {
                     binding.layoutState.tvError.isVisible = false
                     binding.layoutContent.root.isVisible = true
                     binding.layoutContent.rvCart.isVisible = true
-                    viewModel.deleteAllCart()
+                    checkoutviewModel.deleteAllCart()
                     showSuccessDialog()
                 },
                 doOnLoading = {
@@ -113,7 +102,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.checkoutData.observe(this) { result ->
+        checkoutviewModel.checkoutData.observe(this) { result ->
             result.proceedWhen(doOnSuccess = {
                 binding.layoutState.root.isVisible = false
                 binding.layoutState.pbLoading.isVisible = false

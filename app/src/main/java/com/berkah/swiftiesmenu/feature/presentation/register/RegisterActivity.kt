@@ -4,35 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.berkah.swiftiesmenu.R
 import com.berkah.swiftiesmenu.databinding.ActivityRegisterBinding
-import com.berkah.swiftiesmenu.feature.data.repository.UserRepositoryImpl
-import com.berkah.swiftiesmenu.feature.data.source.network.firebase.FirebaseAuthDataSourceImpl
-import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.highLightWord
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 import com.berkah.swiftiesmenu.feature.presentation.login.LoginActivity
 import com.berkah.swiftiesmenu.feature.presentation.main.MainActivity
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
     private val binding: ActivityRegisterBinding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
-    private val viewModel: RegisterViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-
-    private fun createViewModel(): RegisterViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return RegisterViewModel(repo)
-    }
+    private val registerviewModel: RegisterViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,12 +51,12 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.layoutForm.etEmail.text.toString().trim()
             val password = binding.layoutForm.etPassword.text.toString().trim()
             val fullName = binding.layoutForm.etName.text.toString().trim()
-            viewModel.doRegister(fullName, email, password)
+            registerviewModel.doRegister(fullName, email, password)
         }
     }
 
     private fun observeResult() {
-        viewModel.registerResult.observe(this) {
+        registerviewModel.registerResult.observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false
