@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623108705167",
+    "project_id": "swiftiesmenu",
+    "storage_bucket": "swiftiesmenu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623108705167:android:b4bfe0acabe762f6fd99fa",
+        "android_client_info": {
+          "package_name": "com.berkah.swiftiesmenu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoyCng86oA0GdbMqODc2CSfh1bY4F7iiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
