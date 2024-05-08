@@ -9,12 +9,15 @@ import com.berkah.swiftiesmenu.feature.data.utils.proceedFlow
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>>
+    suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Flow<ResultWrapper<Boolean>>
 
     suspend fun doRegister(
         fullName: String,
         email: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>>
 
     fun doLogout(): Boolean
@@ -25,7 +28,7 @@ interface UserRepository {
 
     suspend fun updateProfile(
         fullName: String? = null,
-        photoUri: Uri? = null
+        photoUri: Uri? = null,
     ): Flow<ResultWrapper<Boolean>>
 
     suspend fun updatePassword(newPassword: String): Flow<ResultWrapper<Boolean>>
@@ -36,14 +39,17 @@ interface UserRepository {
 }
 
 class UserRepositoryImpl(private val dataSource: FirebaseAuthDataSource) : UserRepository {
-    override suspend fun doLogin(email: String, password: String): Flow<ResultWrapper<Boolean>> {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doLogin(email, password) }
     }
 
     override suspend fun doRegister(
         fullName: String,
         email: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doRegister(fullName, email, password) }
     }
@@ -62,7 +68,7 @@ class UserRepositoryImpl(private val dataSource: FirebaseAuthDataSource) : UserR
 
     override suspend fun updateProfile(
         fullName: String?,
-        photoUri: Uri?
+        photoUri: Uri?,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.updateProfile(fullName, photoUri) }
     }
@@ -78,5 +84,4 @@ class UserRepositoryImpl(private val dataSource: FirebaseAuthDataSource) : UserR
     override fun sendChangePasswordRequestByEmail(): Boolean {
         return dataSource.sendChangePasswordRequestByEmail()
     }
-
 }

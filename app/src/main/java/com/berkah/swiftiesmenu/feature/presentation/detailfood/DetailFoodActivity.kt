@@ -28,7 +28,7 @@ class DetailFoodActivity : AppCompatActivity() {
         val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
         val rp: CartRepository = CartRepositoryImpl(ds)
         GenericViewModelFactory.create(
-            DetailFoodViewModel(intent?.extras, rp)
+            DetailFoodViewModel(intent?.extras, rp),
         )
     }
 
@@ -57,11 +57,12 @@ class DetailFoodActivity : AppCompatActivity() {
 
     private fun addMenuToCart() {
         viewModel.addToCart().observe(this) {
-            it.proceedWhen (
+            it.proceedWhen(
                 doOnSuccess = {
                     Toast.makeText(
                         this,
-                        getString(R.string.text_add_to_cart_success), Toast.LENGTH_SHORT
+                        getString(R.string.text_add_to_cart_success),
+                        Toast.LENGTH_SHORT,
                     ).show()
                     finish()
                 },
@@ -71,7 +72,7 @@ class DetailFoodActivity : AppCompatActivity() {
                 },
                 doOnLoading = {
                     Toast.makeText(this, getString(R.string.loading), Toast.LENGTH_SHORT).show()
-                }
+                },
             )
         }
     }
@@ -87,8 +88,8 @@ class DetailFoodActivity : AppCompatActivity() {
             binding.tvDescLoca.text = item.addres
             binding.tvDescLoca.setOnClickListener {
                 // val i= Intent(Intent.ACTION_VIEW)
-                //i.setData(Uri.parse(menu.mapURL))
-                //startActivity(i)
+                // i.setData(Uri.parse(menu.mapURL))
+                // startActivity(i)
             }
         }
     }
@@ -105,7 +106,11 @@ class DetailFoodActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MENU = "EXTRA_MENU"
-        fun startActivity(context: Context, menu: Menu) {
+
+        fun startActivity(
+            context: Context,
+            menu: Menu,
+        ) {
             val intent = Intent(context, DetailFoodActivity::class.java)
             intent.putExtra(EXTRA_MENU, menu)
             context.startActivity(intent)

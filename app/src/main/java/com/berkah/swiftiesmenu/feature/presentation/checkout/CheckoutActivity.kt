@@ -18,14 +18,13 @@ import com.berkah.swiftiesmenu.feature.data.repository.MenuRepository
 import com.berkah.swiftiesmenu.feature.data.repository.MenuRepositoryImpl
 import com.berkah.swiftiesmenu.feature.data.source.local.database.AppDatabase
 import com.berkah.swiftiesmenu.feature.data.source.network.services.SwiftiesMenuApiService
-import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
-import com.berkah.swiftiesmenu.feature.presentation.checkout.adapter.PriceListAdapter
 import com.berkah.swiftiesmenu.feature.data.utils.GenericViewModelFactory
 import com.berkah.swiftiesmenu.feature.data.utils.proceedWhen
 import com.berkah.swiftiesmenu.feature.data.utils.toIndonesianFormat
+import com.berkah.swiftiesmenu.feature.presentation.cart.common.CartListAdapter
+import com.berkah.swiftiesmenu.feature.presentation.checkout.adapter.PriceListAdapter
 
 class CheckoutActivity : AppCompatActivity() {
-
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
@@ -36,7 +35,7 @@ class CheckoutActivity : AppCompatActivity() {
         val pr: MenuRepository = MenuRepositoryImpl(pds)
         val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
         val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp,pr))
+        GenericViewModelFactory.create(CheckoutViewModel(rp, pr))
     }
 
     private val adapter: CartListAdapter by lazy {
@@ -44,7 +43,6 @@ class CheckoutActivity : AppCompatActivity() {
     }
     private val priceItemAdapter: PriceListAdapter by lazy {
         PriceListAdapter {
-
         }
     }
 
@@ -89,20 +87,23 @@ class CheckoutActivity : AppCompatActivity() {
                     binding.layoutState.pbLoading.isVisible = false
                     binding.layoutContent.root.isVisible = false
                     binding.layoutContent.rvCart.isVisible = false
-                    Toast.makeText(this,
+                    Toast.makeText(
+                        this,
                         getString(R.string.error_checkout),
-                        Toast.LENGTH_SHORT).show()
-                }
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                },
             )
         }
     }
 
     private fun showSuccessDialog() {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.create_order_success))
-            .setPositiveButton(getString(R.string.close)) { _, _ ->
-                finish()
-            }
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle(getString(R.string.create_order_success))
+                .setPositiveButton(getString(R.string.close)) { _, _ ->
+                    finish()
+                }
         dialog.show()
     }
 

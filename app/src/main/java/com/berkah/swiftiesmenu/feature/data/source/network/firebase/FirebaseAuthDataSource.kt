@@ -10,14 +10,21 @@ import kotlinx.coroutines.tasks.await
 
 interface FirebaseAuthDataSource {
     @Throws(exceptionClasses = [Exception::class])
-    suspend fun doLogin(email: String, password: String): Boolean
+    suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean
 
     @Throws(exceptionClasses = [Exception::class])
-    suspend fun doRegister(fullName: String, email: String, password: String): Boolean
+    suspend fun doRegister(
+        fullName: String,
+        email: String,
+        password: String,
+    ): Boolean
 
     suspend fun updateProfile(
         fullName: String? = null,
-        photoUri: Uri? = null
+        photoUri: Uri? = null,
     ): Boolean
 
     suspend fun updatePassword(newPassword: String): Boolean
@@ -34,33 +41,39 @@ interface FirebaseAuthDataSource {
 }
 
 class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseAuth) : FirebaseAuthDataSource {
-
     @Throws(exceptionClasses = [Exception::class])
-    override suspend fun doLogin(email: String, password: String): Boolean {
+    override suspend fun doLogin(
+        email: String,
+        password: String,
+    ): Boolean {
         val loginResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
         return loginResult.user != null
     }
 
     @Throws(exceptionClasses = [Exception::class])
-    override suspend fun doRegister(fullName: String, email: String, password: String): Boolean {
+    override suspend fun doRegister(
+        fullName: String,
+        email: String,
+        password: String,
+    ): Boolean {
         val registerResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
         registerResult.user?.updateProfile(
             userProfileChangeRequest {
                 displayName = fullName
-            }
+            },
         )?.await()
         return registerResult.user != null
     }
 
     override suspend fun updateProfile(
         fullName: String?,
-        photoUri: Uri?
+        photoUri: Uri?,
     ): Boolean {
         getCurrentUser()?.updateProfile(
             userProfileChangeRequest {
                 fullName?.let { displayName = fullName }
                 photoUri?.let { this.photoUri = it }
-            }
+            },
         )?.await()
         return true
     }
