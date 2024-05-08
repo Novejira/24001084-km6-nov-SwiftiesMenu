@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    android:background="@color/seed">
+
+    <include
+        android:id="@+id/layout_banner_fragment_profile"
+        layout="@layout/layout_banner_fragment_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp" />
+
+<!--Profile -->
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="8dp"
+        android:background="@color/md_theme_light_onPrimary"
+        android:src="@drawable/ic_profile" />
+
+    <!--name -->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_name"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_onPrimary"
+        android:enabled="false"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/text_input_name" />
+
+    <!--username -->
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/text_username"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/username_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_onPrimary"
+        android:enabled="false"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/text_input_username" />
+
+
+    <!--email -->
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/text_email"
+        android:layout_marginHorizontal="8dp"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/email_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_onPrimary"
+        android:enabled="false"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/text_input_email" />
+
+    <!--button -->
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_edit" />
+
+
+</LinearLayout>
