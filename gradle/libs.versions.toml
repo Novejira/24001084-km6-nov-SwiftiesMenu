@@ -26,6 +26,9 @@ firebaseCrashlyticsGradle = "2.9.9"
 firebaseAuth = "22.3.1"
 koin = "3.5.6"
 ktlint = "12.1.0"
+mockk = "1.13.10"
+coroutine-test = "1.7.2"
+turbine = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +75,12 @@ firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-
 
 # Koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+
+# Unit Testing
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+mockk-agent = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine-test" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

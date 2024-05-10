@@ -102,6 +102,8 @@ dependencies {
 
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.auth)
+    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.12")
     ksp(libs.room.compiler)
 
     // coroutine
@@ -117,4 +119,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    testImplementation(libs.mockk.agent)
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.turbine)
 }
