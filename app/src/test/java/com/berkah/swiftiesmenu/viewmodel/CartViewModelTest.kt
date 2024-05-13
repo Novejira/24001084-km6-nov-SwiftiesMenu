@@ -40,7 +40,6 @@ class CartViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        every { userrepo.isLoggedIn() } returns true
         viewModel = spyk(CartViewModel(cartrepo, userrepo))
     }
 
@@ -85,8 +84,8 @@ class CartViewModelTest {
             flow {
                 emit(ResultWrapper.Success(true))
             }
-        viewModel.increaseCart(mockk())
-        verify { cartrepo.increaseCart(any()) }
+        viewModel.removeCart(mockk())
+        verify { cartrepo.deleteCart(any()) }
     }
 
     @Test
@@ -101,5 +100,9 @@ class CartViewModelTest {
 
     @Test
     fun isUserLoggedIn() {
+        every { userrepo.isLoggedIn() } returns true
+        val result = viewModel.isUserLoggedIn()
+        assertEquals(true, result)
+        verify { userrepo.isLoggedIn() }
     }
 }

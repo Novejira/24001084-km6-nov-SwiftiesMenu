@@ -31,6 +31,7 @@ class CategoryRepositoryImplTest {
         repo = CategoryRepositoryImpl(ds)
     }
 
+    @Test
     fun `get categories loading`() {
         val c1 =
             CategoryItemResponse(

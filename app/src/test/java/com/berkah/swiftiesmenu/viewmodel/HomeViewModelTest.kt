@@ -1,10 +1,11 @@
-package com.berkah.swiftiesmenu.feature.presentation.home
+package com.berkah.swiftiesmenu.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.berkah.swiftiesmenu.feature.data.repository.CategoryRepository
 import com.berkah.swiftiesmenu.feature.data.repository.MenuRepository
 import com.berkah.swiftiesmenu.feature.data.repository.PreferenceRepository
 import com.berkah.swiftiesmenu.feature.data.utils.ResultWrapper
+import com.berkah.swiftiesmenu.feature.presentation.home.HomeViewModel
 import com.berkah.swiftiesmenu.tools.MainCoroutineRule
 import com.berkah.swiftiesmenu.tools.getOrAwaitValue
 import io.mockk.MockKAnnotations
